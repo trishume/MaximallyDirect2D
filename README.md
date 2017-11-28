@@ -8,6 +8,10 @@ In the [Hello Triangle](https://developer.apple.com/documentation/metal/hello_tr
 
 In this sample, you'll learn how to use a vertex buffer to improve your rendering efficiency. In particular, you'll learn how to use a vertex buffer to store and load vertex data for multiple quads.
 
+## Getting Started
+
+The Xcode project contains schemes for running the sample on macOS, iOS, or tvOS. Metal is not supported in the iOS or tvOS Simulator, so the iOS and tvOS schemes require a physical device to run the sample. The default scheme is macOS, which runs the sample as is on your Mac.
+
 ## Manage Large Amounts of Vertex Data
 
 In the [Hello Triangle](https://developer.apple.com/documentation/metal/hello_triangle) sample, the sample renders three vertices of 32 bytes each, amounting to 96 bytes of vertex data. This small amount of vertex data is sent to a vertex function through a call to the `setVertexBytes:length:atIndex:` method. This method allocates a small amount of memory that's accessible to the graphics processing unit (GPU) and can be allocated in each frame without a noticeable performance cost.
@@ -23,14 +27,14 @@ In Objective-C, byte buffers are wrapped by `NSData` or `NSMutableData` objects,
 ``` objective-c
 const AAPLVertex quadVertices[] =
 {
-    // Pixel Positions, RGBA colors
-    { { -20,   20 },   { 1, 0, 0, 1 } },
-    { {  20,   20 },   { 0, 0, 1, 1 } },
-    { { -20,  -20 },   { 0, 1, 0, 1 } },
+    // Pixel positions, RGBA colors
+    { { -20,   20 },    { 1, 0, 0, 1 } },
+    { {  20,   20 },    { 0, 0, 1, 1 } },
+    { { -20,  -20 },    { 0, 1, 0, 1 } },
 
-    { {  20,  -20 },   { 1, 0, 0, 1 } },
-    { { -20,  -20 },   { 0, 1, 0, 1 } },
-    { {  20,   20 },   { 0, 0, 1, 1 } },
+    { {  20,  -20 },    { 1, 0, 0, 1 } },
+    { { -20,  -20 },    { 0, 1, 0, 1 } },
+    { {  20,   20 },    { 0, 0, 1, 1 } },
 };
 const NSUInteger NUM_COLUMNS = 25;
 const NSUInteger NUM_ROWS = 15;
@@ -48,7 +52,7 @@ Both `NSData` and `MTLBuffer` objects store custom data, which means your app is
 ``` metal
 vertex RasterizerData
 vertexShader(uint vertexID [[ vertex_id ]],
-             constant AAPLVertex *vertices [[ buffer(AAPLVertexInputIndexVertices) ]],
+             device AAPLVertex *vertices [[ buffer(AAPLVertexInputIndexVertices) ]],
              constant vector_uint2 *viewportSizePointer  [[ buffer(AAPLVertexInputIndexViewportSize) ]])
 ```
 
@@ -57,11 +61,12 @@ Fundamentally, both `NSData` and `MTLBuffer` objects are quite similar. However,
 ``` objective-c
 NSData *vertexData = [AAPLRenderer generateVertexData];
 
-// Create our vertex buffer, allocating storage that can be read directly the GPU
+// Create a vertex buffer by allocating storage that can be read by the GPU
 _vertexBuffer = [_device newBufferWithLength:vertexData.length
                                      options:MTLResourceStorageModeShared];
 
-// Copy our vertex array into _vertexBuffer by accessing a pointer via the 'contents' property
+// Copy the vertex data into the vertex buffer by accessing a pointer via
+// the buffer's `contents` property
 memcpy(_vertexBuffer.contents, vertexData.bytes, vertexData.length);
 ```
 
@@ -86,7 +91,7 @@ Finally, all vertices are drawn by issuing a draw call that starts from the firs
                        length:sizeof(_viewportSize)
                       atIndex:AAPLVertexInputIndexViewportSize];
 
-// Draw the vertices of our quads
+// Draw the vertices of the quads
 [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle
                   vertexStart:0
                   vertexCount:_numVertices];

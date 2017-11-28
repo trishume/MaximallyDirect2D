@@ -2,7 +2,7 @@
 See LICENSE folder for this sample’s licensing information.
 
 Abstract:
-Implementation of renderer class which perfoms Metal setup and per frame rendering
+Implementation of renderer class which performs Metal setup and per frame rendering
 */
 
 @import simd;
@@ -11,7 +11,7 @@ Implementation of renderer class which perfoms Metal setup and per frame renderi
 #import "AAPLRenderer.h"
 
 // Header shared between C code here, which executes Metal API commands, and .metal files, which
-//   uses these types as inpute to the shaders
+//   uses these types as inputs to the shaders
 #import "AAPLShaderTypes.h"
 
 @implementation AAPLRenderer
@@ -29,7 +29,7 @@ Implementation of renderer class which perfoms Metal setup and per frame renderi
     NSUInteger _numVertices;
 }
 
-/// Initialize with the MetalKit view from which we'll obtain our metal device
+/// Initialize with the MetalKit view from which we'll obtain our Metal device
 - (nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)mtkView
 {
     self = [super init];
@@ -42,20 +42,20 @@ Implementation of renderer class which perfoms Metal setup and per frame renderi
     return self;
 }
 
-/// Creates a grid of 30x20 quads (i.e. 144000 bytes with 600 vertices are to be loaded into
-///   a vertex buffer
+/// Creates a grid of 25x15 quads (i.e. 72000 bytes with 2250 vertices are to be loaded into
+///   a vertex buffer)
 + (nonnull NSData *)generateVertexData
 {
     const AAPLVertex quadVertices[] =
     {
-        // Pixel Positions, RGBA colors
-        { { -20,   20 },   { 1, 0, 0, 1 } },
-        { {  20,   20 },   { 0, 0, 1, 1 } },
-        { { -20,  -20 },   { 0, 1, 0, 1 } },
+        // Pixel positions, RGBA colors
+        { { -20,   20 },    { 1, 0, 0, 1 } },
+        { {  20,   20 },    { 0, 0, 1, 1 } },
+        { { -20,  -20 },    { 0, 1, 0, 1 } },
 
-        { {  20,  -20 },   { 1, 0, 0, 1 } },
-        { { -20,  -20 },   { 0, 1, 0, 1 } },
-        { {  20,   20 },   { 0, 0, 1, 1 } },
+        { {  20,  -20 },    { 1, 0, 0, 1 } },
+        { { -20,  -20 },    { 0, 1, 0, 1 } },
+        { {  20,   20 },    { 0, 0, 1, 1 } },
     };
     const NSUInteger NUM_COLUMNS = 25;
     const NSUInteger NUM_ROWS = 15;
@@ -88,7 +88,7 @@ Implementation of renderer class which perfoms Metal setup and per frame renderi
     return vertexData;
 }
 
-/// Create our metal render state objects including our shaders and render state pipeline objects
+/// Create our Metal render state objects including our shaders and render state pipeline objects
 - (void)loadMetal:(nonnull MTKView *)mtkView
 {
     mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm_sRGB;
@@ -118,11 +118,12 @@ Implementation of renderer class which perfoms Metal setup and per frame renderi
 
     NSData *vertexData = [AAPLRenderer generateVertexData];
 
-    // Create our vertex buffer, allocating storage that can be read directly the GPU
+    // Create a vertex buffer by allocating storage that can be read by the GPU
     _vertexBuffer = [_device newBufferWithLength:vertexData.length
                                          options:MTLResourceStorageModeShared];
 
-    // Copy our vertex array into _vertexBuffer by accessing a pointer via the 'contents' property
+    // Copy the vertex data into the vertex buffer by accessing a pointer via
+    // the buffer's `contents` property
     memcpy(_vertexBuffer.contents, vertexData.bytes, vertexData.length);
 
     // Calculate the number of vertices by dividing the byte length by the size of each vertex
@@ -180,7 +181,7 @@ Implementation of renderer class which perfoms Metal setup and per frame renderi
                                length:sizeof(_viewportSize)
                               atIndex:AAPLVertexInputIndexViewportSize];
 
-        // Draw the vertices of our quads
+        // Draw the vertices of the quads
         [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle
                           vertexStart:0
                           vertexCount:_numVertices];
