@@ -101,4 +101,4 @@ Finally, all vertices are drawn by issuing a draw call that starts from the firs
 
 In this sample, you learned how to use a vertex buffer to improve your rendering efficiency.
 
-In the [Basic Texturing](https://developer.apple.com/documentation/metal/fundamental_lessons/basic_texturing) sample, you'll learn how to load image data and texture a quad.
+In the [Basic Texturing](https://developer.apple.com/documentation/metal/basic_texturing) sample, you'll learn how to load image data and texture a quad.
