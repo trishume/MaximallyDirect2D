@@ -35,9 +35,9 @@
 		3A9756BF1EA00F2100EFC776 /* AAPLRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLRenderer.m; sourceTree = "<group>"; };
 		3A9756C01EA00F2100EFC776 /* AAPLShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLShaderTypes.h; sourceTree = "<group>"; };
 		3A9756C11EA00F2100EFC776 /* AAPLShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = AAPLShaders.metal; sourceTree = "<group>"; };
-		3A9756C91EA00F2100EFC776 /* BasicBuffers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicBuffers.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A9756E31EA00F2100EFC776 /* BasicBuffers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicBuffers.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A9756F91EA00F2100EFC776 /* BasicBuffers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicBuffers.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A9756C91EA00F2100EFC776 /* MaximallyDirect2D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MaximallyDirect2D.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A9756E31EA00F2100EFC776 /* MaximallyDirect2D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MaximallyDirect2D.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A9756F91EA00F2100EFC776 /* MaximallyDirect2D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MaximallyDirect2D.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AB042501EBA863E004343F2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3ABBE2721F7318D90080C72C /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
 		3ABBE2731F7318D90080C72C /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -113,9 +113,9 @@
 		3A9756CA1EA00F2100EFC776 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3A9756C91EA00F2100EFC776 /* BasicBuffers.app */,
-				3A9756E31EA00F2100EFC776 /* BasicBuffers.app */,
-				3A9756F91EA00F2100EFC776 /* BasicBuffers.app */,
+				3A9756C91EA00F2100EFC776 /* MaximallyDirect2D.app */,
+				3A9756E31EA00F2100EFC776 /* MaximallyDirect2D.app */,
+				3A9756F91EA00F2100EFC776 /* MaximallyDirect2D.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -193,9 +193,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3A9756C81EA00F2100EFC776 /* BasicBuffers-iOS */ = {
+		3A9756C81EA00F2100EFC776 /* MaximallyDirect2D-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3A97571C1EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "BasicBuffers-iOS" */;
+			buildConfigurationList = 3A97571C1EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "MaximallyDirect2D-iOS" */;
 			buildPhases = (
 				3A9756C51EA00F2100EFC776 /* Sources */,
 				3A9756C61EA00F2100EFC776 /* Frameworks */,
@@ -205,14 +205,14 @@
 			);
 			dependencies = (
 			);
-			name = "BasicBuffers-iOS";
+			name = "MaximallyDirect2D-iOS";
 			productName = iOS;
-			productReference = 3A9756C91EA00F2100EFC776 /* BasicBuffers.app */;
+			productReference = 3A9756C91EA00F2100EFC776 /* MaximallyDirect2D.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3A9756E21EA00F2100EFC776 /* BasicBuffers-tvOS */ = {
+		3A9756E21EA00F2100EFC776 /* MaximallyDirect2D-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3A97571F1EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "BasicBuffers-tvOS" */;
+			buildConfigurationList = 3A97571F1EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "MaximallyDirect2D-tvOS" */;
 			buildPhases = (
 				3A9756DF1EA00F2100EFC776 /* Sources */,
 				3A9756E01EA00F2100EFC776 /* Frameworks */,
@@ -222,14 +222,14 @@
 			);
 			dependencies = (
 			);
-			name = "BasicBuffers-tvOS";
+			name = "MaximallyDirect2D-tvOS";
 			productName = tvOS;
-			productReference = 3A9756E31EA00F2100EFC776 /* BasicBuffers.app */;
+			productReference = 3A9756E31EA00F2100EFC776 /* MaximallyDirect2D.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3A9756F81EA00F2100EFC776 /* BasicBuffers-macOS */ = {
+		3A9756F81EA00F2100EFC776 /* MaximallyDirect2D-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3A9757221EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "BasicBuffers-macOS" */;
+			buildConfigurationList = 3A9757221EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "MaximallyDirect2D-macOS" */;
 			buildPhases = (
 				3A9756F51EA00F2100EFC776 /* Sources */,
 				3A9756F61EA00F2100EFC776 /* Frameworks */,
@@ -239,9 +239,9 @@
 			);
 			dependencies = (
 			);
-			name = "BasicBuffers-macOS";
+			name = "MaximallyDirect2D-macOS";
 			productName = macOS;
-			productReference = 3A9756F91EA00F2100EFC776 /* BasicBuffers.app */;
+			productReference = 3A9756F91EA00F2100EFC776 /* MaximallyDirect2D.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -268,7 +268,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3A9756BC1EA00F2100EFC776 /* Build configuration list for PBXProject "BasicBuffers" */;
+			buildConfigurationList = 3A9756BC1EA00F2100EFC776 /* Build configuration list for PBXProject "MaximallyDirect2D" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -281,9 +281,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3A9756F81EA00F2100EFC776 /* BasicBuffers-macOS */,
-				3A9756C81EA00F2100EFC776 /* BasicBuffers-iOS */,
-				3A9756E21EA00F2100EFC776 /* BasicBuffers-tvOS */,
+				3A9756F81EA00F2100EFC776 /* MaximallyDirect2D-macOS */,
+				3A9756C81EA00F2100EFC776 /* MaximallyDirect2D-iOS */,
+				3A9756E21EA00F2100EFC776 /* MaximallyDirect2D-tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -506,7 +506,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = BasicBuffers;
+				PRODUCT_NAME = MaximallyDirect2D;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -525,7 +525,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = BasicBuffers;
+				PRODUCT_NAME = MaximallyDirect2D;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -546,7 +546,7 @@
 				INFOPLIST_FILE = Application/tvOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = BasicBuffers;
+				PRODUCT_NAME = MaximallyDirect2D;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -564,7 +564,7 @@
 				INFOPLIST_FILE = Application/tvOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = BasicBuffers;
+				PRODUCT_NAME = MaximallyDirect2D;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -590,7 +590,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = BasicBuffers;
+				PRODUCT_NAME = MaximallyDirect2D;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
@@ -610,7 +610,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = BasicBuffers;
+				PRODUCT_NAME = MaximallyDirect2D;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
@@ -619,7 +619,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3A9756BC1EA00F2100EFC776 /* Build configuration list for PBXProject "BasicBuffers" */ = {
+		3A9756BC1EA00F2100EFC776 /* Build configuration list for PBXProject "MaximallyDirect2D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3A97571A1EA00F2100EFC776 /* Debug */,
@@ -628,7 +628,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3A97571C1EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "BasicBuffers-iOS" */ = {
+		3A97571C1EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "MaximallyDirect2D-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3A97571D1EA00F2100EFC776 /* Debug */,
@@ -637,7 +637,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3A97571F1EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "BasicBuffers-tvOS" */ = {
+		3A97571F1EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "MaximallyDirect2D-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3A9757201EA00F2100EFC776 /* Debug */,
@@ -646,7 +646,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3A9757221EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "BasicBuffers-macOS" */ = {
+		3A9757221EA00F2100EFC776 /* Build configuration list for PBXNativeTarget "MaximallyDirect2D-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3A9757231EA00F2100EFC776 /* Debug */,
