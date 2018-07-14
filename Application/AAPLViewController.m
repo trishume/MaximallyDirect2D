@@ -112,7 +112,8 @@ Implementation of our cross-platform view controller
 }
 
 - (void)mouseMoved:(NSEvent *)event {
-    NSLog(@"mouse Detected");
+    if(!([NSApplication sharedApplication].active)) return;
+//    NSLog(@"mouse Detected");
     vector_float2 pos = [_renderer quadPos: 2];
     vector_uint2 viewportSize = [_renderer viewportSize];
 

@@ -50,6 +50,8 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
 
     int _sendSocket;
     bool _blockEvents;
+
+    MPSemaphoreID _needsDisplay;
 }
 
 /// Initialize with the MetalKit view from which we'll obtain our Metal device
@@ -92,7 +94,7 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
 }
 
 - (void)moveQuad:(NSUInteger)index by:(vector_float2)delta {
-    if(_blockEvents) return;
+    // if(_blockEvents) return;
     _blockEvents = YES;
 
     AAPLVertex *quad = _verts + (index*NUM_VERTICES_PER_QUAD);
@@ -130,14 +132,23 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
         listenData(socket, quad, sizeof(QUAD_VERTS));
         // NSLog(@"gotem");
         kdebug_signpost(1,0,0,0,0);
-        [_view draw];
+        // [_view draw];
         // [_view setNeedsDisplay];
+        MPSignalSemaphore(_needsDisplay);
+    }
+}
+
+- (void)renderThread {
+    while(true) {
+        MPWaitOnSemaphore(_needsDisplay, kDurationForever);
+        [_view draw];
     }
 }
 
 /// Create our Metal render state objects including our shaders and render state pipeline objects
 - (void)loadMetal:(nonnull MTKView *)mtkView
 {
+    MPCreateSemaphore(1, 0, &_needsDisplay);
     _blockEvents = YES;
 
     mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
@@ -202,6 +213,8 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     [NSThread detachNewThreadSelector:@selector(listenForIndex:) toTarget:self withObject:indexNum];
     indexNum = [NSNumber numberWithUnsignedLong: 2];
     [NSThread detachNewThreadSelector:@selector(listenForIndex:) toTarget:self withObject:indexNum];
+
+    [NSThread detachNewThreadSelector:@selector(renderThread) toTarget:self withObject:nil];
 }
 
 /// Called whenever view changes orientation or is resized
