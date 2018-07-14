@@ -49,6 +49,7 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     AAPLVertex *_verts;
 
     int _sendSocket;
+    bool _blockEvents;
 }
 
 /// Initialize with the MetalKit view from which we'll obtain our Metal device
@@ -91,6 +92,9 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
 }
 
 - (void)moveQuad:(NSUInteger)index by:(vector_float2)delta {
+    if(_blockEvents) return;
+    _blockEvents = YES;
+
     AAPLVertex *quad = _verts + (index*NUM_VERTICES_PER_QUAD);
 
     // NSLog(@"posn: %f", quad[0].position.y);
@@ -106,6 +110,16 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     // [_view draw];
 }
 
+
+- (vector_float2)quadPos:(NSUInteger)index {
+    AAPLVertex *quad = _verts + (index*NUM_VERTICES_PER_QUAD);
+    return (quad[0].position + quad[3].position) * 0.5;
+}
+
+- (vector_uint2)viewportSize {
+    return _viewportSize;
+}
+
 - (void)listenForIndex:(NSNumber *)indexNum {
     NSUInteger index = [indexNum unsignedLongValue];
     AAPLVertex *quad = _verts + (index*NUM_VERTICES_PER_QUAD);
@@ -117,14 +131,18 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
         // NSLog(@"gotem");
         kdebug_signpost(1,0,0,0,0);
         [_view draw];
+        // [_view setNeedsDisplay];
     }
 }
 
 /// Create our Metal render state objects including our shaders and render state pipeline objects
 - (void)loadMetal:(nonnull MTKView *)mtkView
 {
+    _blockEvents = YES;
+
     mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
     mtkView.paused = YES;
+    // mtkView.enableSetNeedsDisplay = YES;
     _view = mtkView;
 
     id<MTLLibrary> defaultLibrary = [_device newDefaultLibrary];
@@ -150,7 +168,7 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
         NSLog(@"Failed to created pipeline state, error %@", error);
     }
 
-    NSUInteger numQuads = 2;
+    NSUInteger numQuads = 3;
     _numVertices = NUM_VERTICES_PER_QUAD * numQuads;
     NSUInteger dataSize = sizeof(QUAD_VERTS) * numQuads;
 
@@ -166,6 +184,8 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     [AAPLRenderer setQuad:0 verts:_verts at:posn];
     posn.x = 90.0;
     [AAPLRenderer setQuad:1 verts:_verts at:posn];
+    posn.x = 180.0;
+    [AAPLRenderer setQuad:2 verts:_verts at:posn];
 
     // Copy the vertex data into the vertex buffer by accessing a pointer via
     // the buffer's `contents` property
@@ -179,6 +199,8 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     NSNumber *indexNum = [NSNumber numberWithUnsignedLong: 0];
     [NSThread detachNewThreadSelector:@selector(listenForIndex:) toTarget:self withObject:indexNum];
     indexNum = [NSNumber numberWithUnsignedLong: 1];
+    [NSThread detachNewThreadSelector:@selector(listenForIndex:) toTarget:self withObject:indexNum];
+    indexNum = [NSNumber numberWithUnsignedLong: 2];
     [NSThread detachNewThreadSelector:@selector(listenForIndex:) toTarget:self withObject:indexNum];
 }
 
@@ -244,6 +266,7 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
 
     [commandBuffer commit];
     kdebug_signpost(2,0,0,0,0);
+    _blockEvents = NO;
 }
 
 @end

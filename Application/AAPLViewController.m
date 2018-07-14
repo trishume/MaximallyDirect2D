@@ -67,6 +67,11 @@ Implementation of our cross-platform view controller
         [self keyDown: event];
         return event;
     }];
+
+    [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskMouseMoved handler:^(NSEvent *event) {
+        [self mouseMoved: event];
+        return event;
+    }];
 }
 
 - (void)keyDown:(NSEvent *)event {
@@ -104,6 +109,21 @@ Implementation of our cross-platform view controller
     if(delta.x != 0.0 || delta.y != 0.0) {
         [_renderer moveQuad:1 by:delta];
     }
+}
+
+- (void)mouseMoved:(NSEvent *)event {
+    NSLog(@"mouse Detected");
+    vector_float2 pos = [_renderer quadPos: 2];
+    vector_uint2 viewportSize = [_renderer viewportSize];
+
+    NSPoint mouseLoc = _view.window.mouseLocationOutsideOfEventStream;
+    vector_float2 targetPos;
+    targetPos.x = 2*mouseLoc.x - 0.5*viewportSize.x;
+    targetPos.y = 2*mouseLoc.y - 0.5*viewportSize.y;
+
+    vector_float2 delta = (targetPos - pos);
+
+    [_renderer moveQuad:2 by:delta];
 }
 
 - (BOOL)acceptsFirstResponder {
