@@ -93,6 +93,13 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     // quad += 6;
 }
 
+- (void)setQuad:(NSUInteger)index color:(vector_float4)color {
+    AAPLVertex* quad = _verts + (index*NUM_VERTICES_PER_QUAD);
+    for (NSUInteger vertexInQuad = 0; vertexInQuad < NUM_VERTICES_PER_QUAD; vertexInQuad++) {
+        quad[vertexInQuad].color = color;
+    }
+}
+
 - (void)moveQuad:(NSUInteger)index by:(vector_float2)delta {
     // if(_blockEvents) return;
     _blockEvents = YES;
@@ -197,6 +204,11 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     [AAPLRenderer setQuad:1 verts:_verts at:posn];
     posn.x = 180.0;
     [AAPLRenderer setQuad:2 verts:_verts at:posn];
+
+    vector_float4 color = {1, 0, 0, 1};
+    [self setQuad:0 color:color];
+    vector_float4 color2 = {0, 1, 0, 1};
+    [self setQuad:1 color:color2];
 
     // Copy the vertex data into the vertex buffer by accessing a pointer via
     // the buffer's `contents` property
