@@ -38,8 +38,10 @@ Implementation of our cross-platform view controller
 
     // below: probably not necessary since there is always
     // integrated GPU, but doesn't hurt.
-    if (_view.device == nil)
+    if (_view.device == nil) {
+        NSLog(@"Failed to get integrated GPU, using default");
         _view.device = MTLCreateSystemDefaultDevice();
+    }
 
     if(!_view.device)
     {
@@ -74,13 +76,13 @@ Implementation of our cross-platform view controller
     delta.y = 0.0;
 
     if(event.keyCode == kVK_ANSI_E)
-        delta.y = 10.0;
+        delta.y = 30.0;
     if(event.keyCode == kVK_ANSI_D)
-        delta.y = -10.0;
+        delta.y = -30.0;
     if(event.keyCode == kVK_ANSI_S)
-        delta.x = -10.0;
+        delta.x = -30.0;
     if(event.keyCode == kVK_ANSI_F)
-        delta.x = 10.0;
+        delta.x = 30.0;
 
     if(delta.x != 0.0 || delta.y != 0.0) {
         [_renderer moveQuad:0 by:delta];
@@ -91,13 +93,13 @@ Implementation of our cross-platform view controller
     delta.y = 0.0;
 
     if(event.keyCode == kVK_UpArrow)
-        delta.y = 10.0;
+        delta.y = 30.0;
     if(event.keyCode == kVK_DownArrow)
-        delta.y = -10.0;
+        delta.y = -30.0;
     if(event.keyCode == kVK_LeftArrow)
-        delta.x = -10.0;
+        delta.x = -30.0;
     if(event.keyCode == kVK_RightArrow)
-        delta.x = 10.0;
+        delta.x = 30.0;
 
     if(delta.x != 0.0 || delta.y != 0.0) {
         [_renderer moveQuad:1 by:delta];
