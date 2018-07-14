@@ -21,7 +21,22 @@ Implementation of our cross-platform view controller
 
     // Set the view to use the default device
     _view = (MTKView *)self.view;
-    _view.device = MTLCreateSystemDefaultDevice();
+    
+    NSArray<id<MTLDevice>> *devices = MTLCopyAllDevices();
+    
+    _view.device = nil;
+    // Low power device is sufficient - try to use it!
+    for (id<MTLDevice> device in devices) {
+        if (device.isLowPower) {
+            _view.device = device;
+            break;
+        }
+    }
+    
+    // below: probably not necessary since there is always
+    // integrated GPU, but doesn't hurt.
+    if (_view.device == nil)
+        _view.device = MTLCreateSystemDefaultDevice();
 
     if(!_view.device)
     {
