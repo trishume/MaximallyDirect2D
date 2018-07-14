@@ -21,13 +21,13 @@ Implementation of renderer class which performs Metal setup and per frame render
 static const AAPLVertex QUAD_VERTS[] =
     {
         // Pixel positions, RGBA colors
-        { { -30,   30 },    { 1, 0, 0, 1 } },
-        { {  30,   30 },    { 0, 0, 1, 1 } },
-        { { -30,  -30 },    { 0, 1, 0, 1 } },
+        { { -60,   60 },    { 1, 0, 0, 1 } },
+        { {  60,   60 },    { 0, 0, 1, 1 } },
+        { { -60,  -60 },    { 0, 1, 0, 1 } },
 
-        { {  30,  -30 },    { 1, 0, 0, 1 } },
-        { { -30,  -30 },    { 0, 1, 0, 1 } },
-        { {  30,   30 },    { 0, 0, 1, 1 } },
+        { {  60,  -60 },    { 1, 0, 0, 1 } },
+        { { -60,  -60 },    { 0, 1, 0, 1 } },
+        { {  60,   60 },    { 0, 0, 1, 1 } },
     };
 static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPLVertex);
 
@@ -200,9 +200,9 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     posn.x = 0.0;
     posn.y = 0.0;
     [AAPLRenderer setQuad:0 verts:_verts at:posn];
-    posn.x = 90.0;
-    [AAPLRenderer setQuad:1 verts:_verts at:posn];
     posn.x = 180.0;
+    [AAPLRenderer setQuad:1 verts:_verts at:posn];
+    posn.x = 180.0*2;
     [AAPLRenderer setQuad:2 verts:_verts at:posn];
 
     vector_float4 color = {1, 0, 0, 1};
