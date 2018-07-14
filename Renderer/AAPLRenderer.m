@@ -14,6 +14,8 @@ Implementation of renderer class which performs Metal setup and per frame render
 //   uses these types as inputs to the shaders
 #import "AAPLShaderTypes.h"
 
+#import "sys/kdebug_signpost.h"
+
 #include "Networking.h"
 
 static const AAPLVertex QUAD_VERTS[] =
@@ -100,6 +102,7 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     sendData(_sendSocket, quad, sizeof(QUAD_VERTS), 9730+index);
     sendData(_sendSocket, quad, sizeof(QUAD_VERTS), 9740+index);
     NSLog(@"sendem");
+    kdebug_signpost(0,0,0,0,0);
     // [_view draw];
 }
 
@@ -112,6 +115,7 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     while(true) {
         listenData(socket, quad, sizeof(QUAD_VERTS));
         NSLog(@"gotem");
+        kdebug_signpost(1,0,0,0,0);
         [_view draw];
     }
 }
@@ -119,7 +123,7 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
 /// Create our Metal render state objects including our shaders and render state pipeline objects
 - (void)loadMetal:(nonnull MTKView *)mtkView
 {
-    mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm_sRGB;
+    mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
     mtkView.paused = YES;
     _view = mtkView;
 
@@ -239,6 +243,7 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     }
 
     [commandBuffer commit];
+    kdebug_signpost(2,0,0,0,0);
 }
 
 @end
