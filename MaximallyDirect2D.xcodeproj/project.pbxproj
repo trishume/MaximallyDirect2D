@@ -56,6 +56,7 @@
 		3AFD65171F71970C0008A125 /* AAPLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLAppDelegate.m; sourceTree = "<group>"; };
 		52E7B7F052E7BA1000000001 /* SampleCode.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = SampleCode.xcconfig; path = Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
 		5835C0705835C32000000001 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		6AD89C3D20FA4C0500857375 /* KeyCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyCodes.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +142,7 @@
 				3AE02F7B1F718CBD00C9EF53 /* macOS */,
 				3AE02F701F718CB400C9EF53 /* iOS */,
 				3AE02F821F718CC900C9EF53 /* tvOS */,
+				6AD89C3D20FA4C0500857375 /* KeyCodes.h */,
 			);
 			path = Application;
 			sourceTree = "<group>";

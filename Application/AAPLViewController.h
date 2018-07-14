@@ -11,6 +11,7 @@ Header for our our cross-platform view controller
 #else
 @import AppKit;
 #define PlatformViewController NSViewController
+#define MACMODE
 #endif
 
 @import MetalKit;

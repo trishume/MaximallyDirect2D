@@ -14,11 +14,26 @@ Implementation of renderer class which performs Metal setup and per frame render
 //   uses these types as inputs to the shaders
 #import "AAPLShaderTypes.h"
 
+static const AAPLVertex QUAD_VERTS[] =
+    {
+        // Pixel positions, RGBA colors
+        { { -20,   20 },    { 1, 0, 0, 1 } },
+        { {  20,   20 },    { 0, 0, 1, 1 } },
+        { { -20,  -20 },    { 0, 1, 0, 1 } },
+
+        { {  20,  -20 },    { 1, 0, 0, 1 } },
+        { { -20,  -20 },    { 0, 1, 0, 1 } },
+        { {  20,   20 },    { 0, 0, 1, 1 } },
+    };
+static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPLVertex);
+
+
 @implementation AAPLRenderer
 {
     id<MTLDevice> _device;
     id<MTLRenderPipelineState> _pipelineState;
     id<MTLCommandQueue> _commandQueue;
+    MTKView *_view;
 
     // GPU buffer which will contain our vertex array
     id<MTLBuffer> _vertexBuffer;
@@ -27,6 +42,7 @@ Implementation of renderer class which performs Metal setup and per frame render
 
     // The number of vertices in our vertex buffer;
     NSUInteger _numVertices;
+    AAPLVertex *_verts;
 }
 
 /// Initialize with the MetalKit view from which we'll obtain our Metal device
@@ -44,54 +60,48 @@ Implementation of renderer class which performs Metal setup and per frame render
 
 /// Creates a grid of 25x15 quads (i.e. 72000 bytes with 2250 vertices are to be loaded into
 ///   a vertex buffer)
-+ (nonnull NSData *)generateVertexData
++ (void)setQuad:(NSUInteger)index verts:(AAPLVertex *)verts at:(vector_float2)posn
 {
-    const AAPLVertex quadVertices[] =
-    {
-        // Pixel positions, RGBA colors
-        { { -20,   20 },    { 1, 0, 0, 1 } },
-        { {  20,   20 },    { 0, 0, 1, 1 } },
-        { { -20,  -20 },    { 0, 1, 0, 1 } },
+    // const NSUInteger NUM_COLUMNS = 25;
+    // const NSUInteger NUM_ROWS = 15;
+    // const float QUAD_SPACING = 50.0;
 
-        { {  20,  -20 },    { 1, 0, 0, 1 } },
-        { { -20,  -20 },    { 0, 1, 0, 1 } },
-        { {  20,   20 },    { 0, 0, 1, 1 } },
-    };
-    const NSUInteger NUM_COLUMNS = 25;
-    const NSUInteger NUM_ROWS = 15;
-    const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(quadVertices) / sizeof(AAPLVertex);
-    const float QUAD_SPACING = 50.0;
+    // NSUInteger dataSize = sizeof(QUAD_VERTS) * NUM_COLUMNS * NUM_ROWS;
+    // NSMutableData *vertexData = [[NSMutableData alloc] initWithLength:dataSize];
 
-    NSUInteger dataSize = sizeof(quadVertices) * NUM_COLUMNS * NUM_ROWS;
-    NSMutableData *vertexData = [[NSMutableData alloc] initWithLength:dataSize];
+    AAPLVertex* quad = verts + (index*NUM_VERTICES_PER_QUAD);
 
-    AAPLVertex* currentQuad = vertexData.mutableBytes;
+    // vector_float2 upperLeftPosition;
+    // upperLeftPosition.x = ((-((float)NUM_COLUMNS) / 2.0) + column) * QUAD_SPACING + QUAD_SPACING/2.0;
+    // upperLeftPosition.y = ((-((float)NUM_ROWS) / 2.0) + row) * QUAD_SPACING + QUAD_SPACING/2.0;
 
-    for(NSUInteger row = 0; row < NUM_ROWS; row++)
-    {
-        for(NSUInteger column = 0; column < NUM_COLUMNS; column++)
-        {
-            vector_float2 upperLeftPosition;
-            upperLeftPosition.x = ((-((float)NUM_COLUMNS) / 2.0) + column) * QUAD_SPACING + QUAD_SPACING/2.0;
-            upperLeftPosition.y = ((-((float)NUM_ROWS) / 2.0) + row) * QUAD_SPACING + QUAD_SPACING/2.0;
+    memcpy(quad, &QUAD_VERTS, sizeof(QUAD_VERTS));
 
-            memcpy(currentQuad, &quadVertices, sizeof(quadVertices));
-
-            for (NSUInteger vertexInQuad = 0; vertexInQuad < NUM_VERTICES_PER_QUAD; vertexInQuad++)
-            {
-                currentQuad[vertexInQuad].position += upperLeftPosition;
-            }
-
-            currentQuad += 6;
-        }
+    for (NSUInteger vertexInQuad = 0; vertexInQuad < NUM_VERTICES_PER_QUAD; vertexInQuad++) {
+        quad[vertexInQuad].position += posn;
     }
-    return vertexData;
+
+    // quad += 6;
+}
+
+- (void)moveQuad:(NSUInteger)index by:(vector_float2)delta {
+    AAPLVertex *quad = _verts + (index*NUM_VERTICES_PER_QUAD);
+
+    // NSLog(@"posn: %f", quad[0].position.y);
+    for (NSUInteger vertexInQuad = 0; vertexInQuad < NUM_VERTICES_PER_QUAD; vertexInQuad++) {
+        quad[vertexInQuad].position += delta;
+    }
+
+//    [_vertexBuffer didModifyRange:NSMakeRange(index*sizeof(QUAD_VERTS), sizeof(QUAD_VERTS))];
+   [_view draw];
 }
 
 /// Create our Metal render state objects including our shaders and render state pipeline objects
 - (void)loadMetal:(nonnull MTKView *)mtkView
 {
     mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm_sRGB;
+    mtkView.paused = YES;
+    _view = mtkView;
 
     id<MTLLibrary> defaultLibrary = [_device newDefaultLibrary];
 
@@ -116,18 +126,27 @@ Implementation of renderer class which performs Metal setup and per frame render
         NSLog(@"Failed to created pipeline state, error %@", error);
     }
 
-    NSData *vertexData = [AAPLRenderer generateVertexData];
+    NSUInteger numQuads = 2;
+    _numVertices = NUM_VERTICES_PER_QUAD * numQuads;
+    NSUInteger dataSize = sizeof(QUAD_VERTS) * numQuads;
 
     // Create a vertex buffer by allocating storage that can be read by the GPU
-    _vertexBuffer = [_device newBufferWithLength:vertexData.length
+    _vertexBuffer = [_device newBufferWithLength:dataSize
                                          options:MTLResourceStorageModeShared];
+
+    // Fill buffer
+    _verts = _vertexBuffer.contents;
+    vector_float2 posn;
+    posn.x = 0.0;
+    posn.y = 0.0;
+    [AAPLRenderer setQuad:0 verts:_verts at:posn];
+    posn.x = 50.0;
+    [AAPLRenderer setQuad:1 verts:_verts at:posn];
 
     // Copy the vertex data into the vertex buffer by accessing a pointer via
     // the buffer's `contents` property
-    memcpy(_vertexBuffer.contents, vertexData.bytes, vertexData.length);
-
-    // Calculate the number of vertices by dividing the byte length by the size of each vertex
-    _numVertices = vertexData.length / sizeof(AAPLVertex);
+//    memcpy(_vertexBuffer.contents, vertexData.bytes, vertexData.length);
+    [mtkView draw];
 
     _commandQueue = [_device newCommandQueue];
 }
@@ -139,6 +158,7 @@ Implementation of renderer class which performs Metal setup and per frame render
     //   values to our vertex shader when we draw
     _viewportSize.x = size.width;
     _viewportSize.y = size.height;
+    [view draw];
 }
 
 /// Called whenever the view needs to render a frame
