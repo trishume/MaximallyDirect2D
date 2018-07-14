@@ -57,6 +57,7 @@
 		52E7B7F052E7BA1000000001 /* SampleCode.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = SampleCode.xcconfig; path = Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
 		5835C0705835C32000000001 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		6AD89C3D20FA4C0500857375 /* KeyCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyCodes.h; sourceTree = "<group>"; };
+		6AD89C3E20FA5A2500857375 /* Networking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Networking.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +108,7 @@
 				3A9756BF1EA00F2100EFC776 /* AAPLRenderer.m */,
 				3A9756C01EA00F2100EFC776 /* AAPLShaderTypes.h */,
 				3A9756C11EA00F2100EFC776 /* AAPLShaders.metal */,
+				6AD89C3E20FA5A2500857375 /* Networking.h */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -591,7 +593,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_PREPROCESSOR_DEFINITIONS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers${SAMPLE_CODE_DISAMBIGUATOR}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers8PYP9P57G62";
 				PRODUCT_NAME = MaximallyDirect2D;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -611,7 +613,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_PREPROCESSOR_DEFINITIONS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers${SAMPLE_CODE_DISAMBIGUATOR}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BasicBuffers8PYP9P57G62";
 				PRODUCT_NAME = MaximallyDirect2D;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;

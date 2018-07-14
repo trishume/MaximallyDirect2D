@@ -14,6 +14,8 @@ Implementation of renderer class which performs Metal setup and per frame render
 //   uses these types as inputs to the shaders
 #import "AAPLShaderTypes.h"
 
+#include "Networking.h"
+
 static const AAPLVertex QUAD_VERTS[] =
     {
         // Pixel positions, RGBA colors
@@ -43,6 +45,8 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     // The number of vertices in our vertex buffer;
     NSUInteger _numVertices;
     AAPLVertex *_verts;
+
+    int _sendSocket;
 }
 
 /// Initialize with the MetalKit view from which we'll obtain our Metal device
@@ -93,7 +97,23 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     }
 
 //    [_vertexBuffer didModifyRange:NSMakeRange(index*sizeof(QUAD_VERTS), sizeof(QUAD_VERTS))];
-   [_view draw];
+    sendData(_sendSocket, quad, sizeof(QUAD_VERTS), 9730+index);
+    sendData(_sendSocket, quad, sizeof(QUAD_VERTS), 9740+index);
+    NSLog(@"sendem");
+    // [_view draw];
+}
+
+- (void)listenForIndex:(NSNumber *)indexNum {
+    NSUInteger index = [indexNum unsignedLongValue];
+    AAPLVertex *quad = _verts + (index*NUM_VERTICES_PER_QUAD);
+    NSLog(@"%lu hi there", index);
+    int socket = createSocket(9730+index);
+    if(!socket) socket = createSocket(9740+index);
+    while(true) {
+        listenData(socket, quad, sizeof(QUAD_VERTS));
+        NSLog(@"gotem");
+        [_view draw];
+    }
 }
 
 /// Create our Metal render state objects including our shaders and render state pipeline objects
@@ -149,6 +169,13 @@ static const NSUInteger NUM_VERTICES_PER_QUAD = sizeof(QUAD_VERTS) / sizeof(AAPL
     [mtkView draw];
 
     _commandQueue = [_device newCommandQueue];
+
+    _sendSocket = createSocket(0);
+
+    NSNumber *indexNum = [NSNumber numberWithUnsignedLong: 0];
+    [NSThread detachNewThreadSelector:@selector(listenForIndex:) toTarget:self withObject:indexNum];
+    indexNum = [NSNumber numberWithUnsignedLong: 1];
+    [NSThread detachNewThreadSelector:@selector(listenForIndex:) toTarget:self withObject:indexNum];
 }
 
 /// Called whenever view changes orientation or is resized
